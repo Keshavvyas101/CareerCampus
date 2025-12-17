@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
 import {
   FiHome,
   FiFileText,
@@ -11,8 +11,8 @@ import {
   FiMenu,
   FiX,
 } from "react-icons/fi";
-import { useAuth } from "../context/AuthContext";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const Navbar = () => {
   const { setAuthenticated } = useAuth();
   const navigate = useNavigate();
