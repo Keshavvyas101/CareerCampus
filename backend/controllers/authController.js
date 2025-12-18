@@ -4,10 +4,11 @@ import generateToken from "../utils/generateToken.js";
 import jwt from "jsonwebtoken";
 
 const cookieOptions = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",
-  maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+   httpOnly: true,
+  secure: true,          // MUST be true on HTTPS
+  sameSite: "None",      // MUST be None for cross-domain
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+  
 };
 
 export const register = async (req, res) => {
