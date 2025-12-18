@@ -3,6 +3,8 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-hot-toast";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+import { Link } from "react-router-dom";
+
 
 
 const Signup = () => {
@@ -131,9 +133,9 @@ const Signup = () => {
 
         <p className="mt-4 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-700 hover:underline">
-            Login
-          </a>
+         <Link to="/login" className="text-blue-700 hover:underline">
+  Login
+</Link>
         </p>
       </div>
     </div>
