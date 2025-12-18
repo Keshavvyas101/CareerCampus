@@ -21,15 +21,16 @@ const app = express();
 // CORS settings to support frontend on localhost:3000
 const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
 
-app.use(
-  cors({
-    origin: [
-    "https://careercampus-frontend.onrender.com",
-    "http://localhost:3000"
-  ],
-    credentials: true,
-  })
-);
+
+
+app.use(cors({
+  origin: "https://careercampus-frontend.onrender.com",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+app.options("*", cors());
+
 
 
 
