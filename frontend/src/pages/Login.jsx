@@ -4,6 +4,8 @@ import {useNavigate} from "react-router-dom";
 import {useAuth} from "../context/AuthContext";
 import {toast} from "react-hot-toast";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+import { Link } from "react-router-dom";
+
 
 
 const Login = () => {
@@ -110,9 +112,14 @@ const Login = () => {
 
         <p className="mt-4 text-center text-sm text-gray-600">
           Don't have an account?{" "}
-          <a href="/signup" className="text-blue-700 hover:underline">
-            Sign up
-          </a>
+          
+
+          <Link to="/signup" className="text-blue-700 hover:underline">
+    Sign up
+    </Link>
+         
+
+          
         </p>
       </div>
     </div>
