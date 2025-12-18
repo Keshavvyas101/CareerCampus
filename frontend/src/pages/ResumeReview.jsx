@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { UploadCard } from "../components/UploadCard";
 import { FeedbackCard } from "../components/FeedbackCard";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = process.env.VITE_API_BASE_URL;
 
 
 export default function ResumeReview() {
