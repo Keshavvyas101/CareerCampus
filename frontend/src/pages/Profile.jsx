@@ -3,7 +3,7 @@ import axios from "axios";
 import {toast} from "react-hot-toast"; // ✅ Import toast
 import {ProfileInformationCard} from "../components/ProfileInformationCard";
 import {ChangePasswordCard} from "../components/ChangePasswordCard";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = process.env.VITE_API_BASE_URL;
 
 
 export default function Profile() {
