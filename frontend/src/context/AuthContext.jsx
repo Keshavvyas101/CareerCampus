@@ -1,7 +1,7 @@
 // src/context/AuthContext.jsx
 import {createContext, useContext, useEffect, useState} from "react";
 import axios from "../services/api"; // Your Axios instance with credentials enabled
-const API_BASE_URL = process.env.VITE_API_BASE_URL;
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 
 const AuthContext = createContext();
