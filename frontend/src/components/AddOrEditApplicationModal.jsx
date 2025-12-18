@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {toast} from "react-hot-toast";
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+const API_BASE = process.env.VITE_API_BASE_URL;
 
 
 
