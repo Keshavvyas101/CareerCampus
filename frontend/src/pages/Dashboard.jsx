@@ -28,7 +28,16 @@ const Dashboard = () => {
         {withCredentials: true}
       );
 
-      setApplications(response.data);
+      
+
+      const apps = Array.isArray(response.data)
+    ? response.data
+    : response.data.applications || response.data.data || []
+     setApplications(apps);
+
+
+
+      
     } catch (err) {
       console.error("Error fetching applications:", err);
       toast.error("Failed to fetch applications.");
@@ -57,6 +66,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-blue-50 px-6 py-8">
+      
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-blue-900">
           Job Applications Dashboard
