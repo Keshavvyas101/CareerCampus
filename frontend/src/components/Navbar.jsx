@@ -12,7 +12,7 @@ import {
   FiX,
 } from "react-icons/fi";
 
-const API_BASE_URL = process.env.VITE_API_BASE_URL;
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 export const Navbar = () => {
   const { setAuthenticated } = useAuth();
   const navigate = useNavigate();
