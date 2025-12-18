@@ -27,6 +27,8 @@ const Dashboard = () => {
         `${API_BASE_URL}/api/applications?${query.toString()}`,
         {withCredentials: true}
       );
+      console.log("API RESPONSE:", response.data);
+
 
       
 
@@ -48,11 +50,14 @@ const Dashboard = () => {
     fetchApplications();
   }, [fetchApplications]);
 
-  const filteredApps = applications.filter(
-    (app) =>
-      app.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      app.role.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+const filteredApps = Array.isArray(applications)
+  ? applications.filter(
+      (app) =>
+        app.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        app.role?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  : [];
+
 
   const handleEdit = (app) => {
     setSelectedApp(app); // ✅ match backend field
