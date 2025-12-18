@@ -18,6 +18,8 @@
    "author": "Keshav Vyas",
 
    "license": "ISC",
+
+  "homepage": ".",
   
   "scripts": {
     "start": "react-scripts start",
