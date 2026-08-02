@@ -25,7 +25,11 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
 
 
 app.use(cors({
-  origin: ["https://careercampus-frontend.onrender.com","http://localhost:3000"],
+  origin: [
+    "https://careercampus-frontend.onrender.com",
+    "http://localhost:3000",
+    ...allowedOrigins.filter(Boolean),
+  ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
