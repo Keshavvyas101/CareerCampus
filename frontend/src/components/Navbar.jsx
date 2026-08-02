@@ -10,10 +10,12 @@ import {
   FiLogOut,
   FiMenu,
   FiX,
+  FiBriefcase,
+  FiAward,
 } from "react-icons/fi";
 
 
-const API_BASE_URL =process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 export const Navbar = () => {
   const { setAuthenticated } = useAuth();
@@ -42,6 +44,8 @@ export const Navbar = () => {
     { name: "Dashboard", path: "/dashboard", icon: <FiHome /> },
     { name: "Resume Review", path: "/resume-review", icon: <FiFileText /> },
     { name: "JD Guidance", path: "/jd-guidance", icon: <FiSearch /> },
+    { name: "Mock Interview", path: "/interview", icon: <FiBriefcase /> },
+    { name: "Interview History", path: "/interview-history", icon: <FiAward /> },
     { name: "Profile", path: "/profile", icon: <FiUser /> },
   ];
 

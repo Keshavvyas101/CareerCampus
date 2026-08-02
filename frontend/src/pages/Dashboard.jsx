@@ -1,8 +1,9 @@
 import React, {useState, useEffect, useCallback} from "react";
-import {FiSearch} from "react-icons/fi";
+import {FiSearch, FiList, FiColumns} from "react-icons/fi";
 import ApplicationCard from "../components/ApplicationCard";
 import AddOrEditApplicationModal from "../components/AddOrEditApplicationModal";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
+import KanbanBoard from "../components/KanbanBoard";
 import axios from "axios";
 import {toast} from "react-hot-toast";
 
@@ -18,6 +19,7 @@ const Dashboard = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedAppId, setSelectedAppId] = useState(null);
   const [selectedApp, setSelectedApp] = useState(null);
+  const [viewMode, setViewMode] = useState("board"); // "board" or "list"
 
   const fetchApplications = useCallback(async () => {
     try {
@@ -71,6 +73,38 @@ const filteredApps = Array.isArray(applications)
     setSelectedApp(null); // ✅ reset form
   };
 
+  const handleStatusChange = async (appId, newStatus) => {
+    // 1. Save original applications state in case of rollback
+    const originalApps = [...applications];
+
+    // 2. Optimistically update local UI state
+    setApplications((prevApps) =>
+      prevApps.map((app) =>
+        app._id === appId ? { ...app, status: newStatus } : app
+      )
+    );
+
+    try {
+      // 3. Make PUT request to backend to update status
+      const response = await axios.put(
+        `${API_BASE_URL}/api/applications/${appId}`,
+        { status: newStatus },
+        { withCredentials: true }
+      );
+
+      if (response.status === 200 || response.status === 204 || response.data) {
+        toast.success(`Moved application to ${newStatus}`);
+      } else {
+        throw new Error("Invalid status code");
+      }
+    } catch (err) {
+      console.error("Error updating application status:", err);
+      toast.error("Failed to update status on server.");
+      // Rollback on failure
+      setApplications(originalApps);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-blue-50 px-6 py-8">
       
@@ -99,7 +133,10 @@ const filteredApps = Array.isArray(applications)
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400"
+            disabled={viewMode === "board"} // Disable status filter in Board view since all statuses are visible
+            className={`px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 ${
+              viewMode === "board" ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-white text-gray-700"
+            }`}
           >
             <option value="">All Statuses</option>
             <option value="Applied">Applied</option>
@@ -111,47 +148,87 @@ const filteredApps = Array.isArray(applications)
           <select
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
-            className="px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400"
+            className="px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 bg-white text-gray-700"
           >
             <option value="asc">Date: Ascending</option>
             <option value="desc">Date: Descending</option>
           </select>
         </div>
 
-        <button
-          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow-md transition"
-          onClick={() => {
-            setSelectedApp(null); // Reset form
-            setShowModal(true);
-          }}
-        >
-          + Add New Application
-        </button>
+        <div className="flex items-center space-x-3 self-stretch md:self-auto justify-between md:justify-start">
+          {/* View Mode Toggle */}
+          <div className="flex items-center bg-gray-200/80 p-1 rounded-lg">
+            <button
+              onClick={() => setViewMode("list")}
+              className={`flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm font-medium transition ${
+                viewMode === "list"
+                  ? "bg-white text-blue-600 shadow-sm font-semibold"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+              title="List View"
+            >
+              <FiList className="shrink-0" />
+              <span className="hidden sm:inline">List</span>
+            </button>
+            <button
+              onClick={() => setViewMode("board")}
+              className={`flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm font-medium transition ${
+                viewMode === "board"
+                  ? "bg-white text-blue-600 shadow-sm font-semibold"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+              title="Kanban Board View"
+            >
+              <FiColumns className="shrink-0" />
+              <span className="hidden sm:inline">Board</span>
+            </button>
+          </div>
+
+          <button
+            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow-md transition font-semibold"
+            onClick={() => {
+              setSelectedApp(null); // Reset form
+              setShowModal(true);
+            }}
+          >
+            + Add New
+          </button>
+        </div>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredApps.length > 0 ? (
-          filteredApps.map((app) => (
-            <ApplicationCard
-              key={app._id}
-              id={app._id}
-              position={app.role}
-              company={app.company}
-              notes={app.notes}
-              status={app.status}
-              dateApplied={app.dateApplied}
-              refreshApplications={fetchApplications}
-              setShowDeleteModal={setShowDeleteModal}
-              setSelectedAppId={setSelectedAppId}
-              onEdit={() => handleEdit(app)}
-            />
-          ))
-        ) : (
-          <p className="text-center col-span-full text-gray-500">
-            No applications found.
-          </p>
-        )}
-      </div>
+      {viewMode === "list" ? (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredApps.length > 0 ? (
+            filteredApps.map((app) => (
+              <ApplicationCard
+                key={app._id}
+                id={app._id}
+                position={app.role}
+                company={app.company}
+                notes={app.notes}
+                status={app.status}
+                dateApplied={app.dateApplied}
+                refreshApplications={fetchApplications}
+                setShowDeleteModal={setShowDeleteModal}
+                setSelectedAppId={setSelectedAppId}
+                onEdit={() => handleEdit(app)}
+              />
+            ))
+          ) : (
+            <p className="text-center col-span-full text-gray-500 py-12">
+              No applications found.
+            </p>
+          )}
+        </div>
+      ) : (
+        <KanbanBoard
+          applications={filteredApps}
+          onStatusChange={handleStatusChange}
+          onEdit={handleEdit}
+          setShowDeleteModal={setShowDeleteModal}
+          setSelectedAppId={setSelectedAppId}
+        />
+      )}
 
       <AddOrEditApplicationModal
         show={showModal}

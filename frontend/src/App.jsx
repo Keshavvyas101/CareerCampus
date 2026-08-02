@@ -14,6 +14,8 @@ import Dashboard from "./pages/Dashboard";
 import ResumeReview from "./pages/ResumeReview";
 import JDGuidance from "./pages/JDGuidance";
 import Profile from "./pages/Profile";
+import InterviewSimulator from "./pages/InterviewSimulator";
+import InterviewHistory from "./pages/InterviewHistory";
 
 const App = () => {
   return (
@@ -61,6 +63,26 @@ const App = () => {
               <PrivateRoute>
                 <MainLayout>
                   <JDGuidance />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/interview"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <InterviewSimulator />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/interview-history"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <InterviewHistory />
                 </MainLayout>
               </PrivateRoute>
             }
