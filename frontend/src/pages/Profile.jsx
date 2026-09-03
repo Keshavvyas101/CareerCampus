@@ -4,7 +4,7 @@ import {toast} from "react-hot-toast"; // ✅ Import toast
 import {ProfileInformationCard} from "../components/ProfileInformationCard";
 import {ChangePasswordCard} from "../components/ChangePasswordCard";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 
 export default function Profile() {

@@ -19,16 +19,13 @@ connectDB();
 
 const app = express();
 
-// CORS settings to support frontend on localhost:3000
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
-
-
-
+// CORS settings for localhost development
 app.use(cors({
   origin: [
-    "https://careercampus-frontend.onrender.com",
     "http://localhost:3000",
-    ...allowedOrigins.filter(Boolean),
+    "http://localhost:3001",
+    "http://localhost:3002",
+    "https://careercompassfe.onrender.com",
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],

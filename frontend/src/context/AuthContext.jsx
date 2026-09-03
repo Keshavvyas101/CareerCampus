@@ -2,7 +2,7 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import axios from "../services/api"; // Your Axios instance with credentials enabled
 
-const API_BASE_URL =process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 
 const AuthContext = createContext();
